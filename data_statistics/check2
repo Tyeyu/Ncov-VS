@@ -1,0 +1,52 @@
+import csv
+import pandas as pd
+import numpy as np
+
+file_name='地区新增统计表示例.csv'
+csv_data = pd.read_csv("地区新增统计表示例.csv",keep_default_na=False)
+#print(csv_data['核减'][20])
+data_list={}
+for e_row in range(0,len(csv_data)):
+    #print(e_row)
+    e_time=csv_data['公开时间'][e_row]
+    e_category=csv_data['类别'][e_row]
+    e_province=csv_data['省份'][e_row]
+    a=[0,0,0,0]
+    a[0]=csv_data['新增确诊病例'][e_row]
+    a[1] = csv_data['新增治愈出院数'][e_row]
+    a[2] = csv_data['新增死亡数'][e_row]
+    a[3] = csv_data['核减'][e_row]
+    b=[0,0,0,0]
+    a[0]=csv_data['新增确诊病例'][e_row]
+    a[1] = csv_data['新增治愈出院数'][e_row]
+    a[2] = csv_data['新增死亡数'][e_row]
+    a[3] = csv_data['核减'][e_row]
+    #地区累加检查
+    if e_category=='':
+        continue
+    if((e_category=='地区级' or e_category=='省级')and(e_province!='香港' and e_province!='澳门' and e_province!='台湾')):
+        if e_province not in data_list:
+            data_list[e_province] = {}
+        if e_time not in data_list[e_province]:
+            data_list[e_province][e_time] = [0, 0, 0, 0, 0, 0, 0, 0]
+        if e_category=='地区级':
+            if a[0]!=''and a[0]!='nan':
+                data_list[e_province][e_time][0]+=int(a[0])
+            if a[1]!=''and a[1]!='nan':
+                data_list[e_province][e_time][1]+=int(a[1])
+            if a[2]!=''and a[2]!='nan':
+                #print(type(a[2]),type(data_list[e_province][e_time][2]))
+                data_list[e_province][e_time][2]+=int(a[2])
+            if a[3]!=''and a[3]!='nan':
+                #print(a[3])
+                data_list[e_province][e_time][3]+=int(a[3])
+        if e_category=='省级':
+            if a[0]!=''and a[0]!='nan':
+                data_list[e_province][e_time][4] = a[0]
+            if a[1]!=''and a[1]!='nan':
+                data_list[e_province][e_time][5] = a[1]
+            if a[2]!=''and a[2]!='nan':
+                data_list[e_province][e_time][6] = a[2]
+            if a[3]!=''and a[3]!='nan':
+                data_list[e_province][e_time][7] = a[3]
+
