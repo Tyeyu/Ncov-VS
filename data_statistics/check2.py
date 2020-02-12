@@ -37,6 +37,10 @@ def judge(data):
 
     return x
 
+def Is_None(data):
+    if(data==''):
+        return 0
+    return data
 
 def get_row_data(e_row, row_data):
     a_list = []
@@ -531,7 +535,7 @@ def write_txt_3(country_dict):
     f1.close()
 
 
-def write_csv(cumulative_dict, postion_dict):
+def write_csv(cumulative_dict):
     name = datetime.datetime.now()
 
     txt_name = 'acummulatedValueCheckResult_' + str(name.month) + '月' + str(name.day) + '日' + str(
@@ -545,18 +549,14 @@ def write_csv(cumulative_dict, postion_dict):
 
     cumulative_key = list(cumulative_dict.keys())
 
-    for i in range(0, len(postion_dict)):
-        # if i>=len(cumulative_key):
-        #     continue
-        cu_time = list(cumulative_dict[cumulative_key[i]].keys())
+    for i in range(0, len(cumulative_dict)):#逐个省份遍历
+        cu_time = list(cumulative_dict[cumulative_key[i]].keys())#一个省份的所有时间
 
-        for j in range(0, len(cumulative_dict[cumulative_key[i]])):
+        for j in range(0, len(cumulative_dict[cumulative_key[i]])):#每一天遍历
 
-            a = cumulative_dict[cumulative_key[i]][cu_time[j]]
+            a = cumulative_dict[cumulative_key[i]][cu_time[j]]#每一天的属性
 
-            dd = cu_time[j]
-
-            dd = datetime.datetime.strptime(dd, "%m月%d日")
+            dd = datetime.datetime.strptime(cu_time[j], "%m月%d日")
 
             e_row = []
 
@@ -577,6 +577,7 @@ def write_csv(cumulative_dict, postion_dict):
                 else:
 
                     e_row.append('是')
+
 
             elif cu_time[j] == '2月1日':
 
@@ -612,31 +613,31 @@ def write_csv(cumulative_dict, postion_dict):
 
                     e_row.append('是')
 
-        a.append(str(int(a[1])))
+            e_row.append(str(int(Is_None(a[1]))))
 
-        a.append(str(int(a[5])))
+            e_row.append(str(int(Is_None(a[5]))))
 
-        if a[1] != a[5]:
+            if a[1] != a[5]:
 
-            e_row.append('否')
+                e_row.append('否')
 
-        else:
+            else:
 
-            e_row.append('是')
+                e_row.append('是')
 
-        e_row.append(str(int(a[2])))
+            e_row.append(str(int(Is_None(a[2]))))
 
-        e_row.append(str(int(a[6])))
+            e_row.append(str(int(Is_None(a[6]))))
 
-        if a[2] != a[6]:
+            if a[2] != a[6]:
 
-            e_row.append('否')
+                e_row.append('否')
 
-        else:
+            else:
 
-            e_row.append('是')
+                e_row.append('是')
 
-        origin_data.append(e_row)
+            origin_data.append(e_row)
 
     with open(txt_name + ".csv", "a+", newline='', encoding='utf-8-sig') as csvfile:
 
@@ -651,11 +652,11 @@ def write_csv(cumulative_dict, postion_dict):
 if __name__ == '__main__':
     origin_data = read_data()
 
-    country_dict = cal_emerge(origin_data)
+    #country_dict = cal_emerge(origin_data)
 
-    time_dict = cal_time(origin_data)
+    #time_dict = cal_time(origin_data)
 
-    postion_dict = cal_postion(origin_data)
+    #postion_dict = cal_postion(origin_data)
 
     cumulative_dict = cal_cumulative(origin_data)
 
@@ -666,14 +667,14 @@ if __name__ == '__main__':
     txt_name = 'acummulatedValueCheckResult_' + str(name.month) + '月' + str(name.day) + '日' + str(
         name.hour) + '时' + str(name.minute) + '分.log'
 
-    f1 = open(txt_name, 'w')
+    #f1 = open(txt_name, 'w')
 
-    write_txt_1(time_dict)
+    #write_txt_1(time_dict)
 
     # write_txt_2(cumulative_dict)
 
     # write_txt_3(country_dict)
 
-    write_csv(cumulative_dict,postion_dict)
+    write_csv(cumulative_dict)
 
     print('done')
