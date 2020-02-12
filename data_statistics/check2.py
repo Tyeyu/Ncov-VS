@@ -188,9 +188,7 @@ def cal_cumulative(origin_data):
     return cumulative_dict   
 
 def write_txt_1(time_dict):
-    name=datetime.datetime.now()
-    txt_name='acummulatedValueCheckResult_'+str(name.month)+'月'+str(name.day)+'日'+str(name.hour)+'时'+str(name.minute)+'分.log'
-    f1=open(txt_name,'w')
+
     f1.write("------------------省级复核，每天地区新增和 == 省级新增-----------------\n")
     time_keys=list(time_dict.keys())
     for i in range(0,len(time_dict)):
@@ -362,9 +360,12 @@ if __name__ == '__main__':
     cumulative_dict=cal_cumulative(origin_data)
 
     global f1
+    name=datetime.datetime.now()
+    txt_name='acummulatedValueCheckResult_'+str(name.month)+'月'+str(name.day)+'日'+str(name.hour)+'时'+str(name.minute)+'分.log'
+    f1=open(txt_name,'w')
     write_txt_1(time_dict)
-    write_txt_2(cumulative_dict)
-    write_txt_3(country_dict)
-    write_csv(cumulative_dict,postion_dict)
+    #write_txt_2(cumulative_dict)
+    #write_txt_3(country_dict)
+    #write_csv(cumulative_dict,postion_dict)
     
     print('done')
